@@ -33,12 +33,9 @@
 
 
 # ##############################
-# Set the project name (a project folder with this name will be created)
-set project_name "my_project0"
-
-# ##############################
-# Define the Ip inputs and output 
-# The IP input and outputs are VECTORS ONLY.
+# Define the IP inputs and output 
+# The IP input and outputs are VECTORS ONLY of any size.
+# IMPORTANT NOTICE: It HAS To be set up before runnign make_template.tcl script and DO NOT modify it during the following design phases.
 
 # Set the NAME of the INPUT vectors
 set input_vectors [list "x0" "x1"]
@@ -46,7 +43,13 @@ set input_vectors [list "x0" "x1"]
 set output_vectors [list "y0"]
 # Set the maximum vector size (number of data) among the input and output vectros
 # Note that the user design can use input and ouput vector of smaller size if required 
-set max_vector_length 10
+set max_vector_length 100
+
+
+# ##############################
+# Set the project name (a project folder with this name will be created)
+set project_name "my_project0"
+
 
 # ##############################
 # Define the IP arithmetic precision

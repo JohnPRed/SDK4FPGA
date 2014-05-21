@@ -47,19 +47,19 @@ To give an idea of the effort required designing algorithms on an FPGA, the char
 
 ### How does it work ?
 
-ICL SDK4FPGA has been designed to be intuitive and will guide the suer during all the design phases:  
+ICL SDK4FPGA has been designed to be intuitive and to guide the user during all the design phases:  
   
-1. Define design parameters (*configuration_ parameters.tcl*)  
+1. Define design specifications (*configuration_parameters.tcl*)
 2. Make a custom template (*make_template.tcl*)
-3. Starting from the template, code your algorithm using C/C++ language (*IP design source code*)
+3. Starting from the template, code your algorithm using C/C++ language (*IP design: source code*)
 4. Test the algorithm code (*IP design: test C/RTL simulation*)
 5. Build the algorithm code (*IP design: build*)
 6. Build the FPGA circuit (*IP prototype: build*)
-7. The the FPGA circuit (*IP prototype: test Hardware In the Loop*)
+7. Test the FPGA circuit (*IP prototype: test Hardware In the Loop*)
   
 The template is 
 
-[Ecosystem](#design1)
+[Ecosystem](#abcd)
 
 
 
@@ -70,11 +70,18 @@ The template is
 
 ---
 
-### design1
+
+### <a name="abcd"></a> Design specifications
+
+Design parameters can be specified editing *configuration_ parameters.tcl* file.  
+They can be edited during all the design phases except for the
+'''tcl
+input_vectors, output_vectors, max_vector_length
+''' 
 
 ---
 
-### design2
+# design2
 
 ---
 
