@@ -33,7 +33,7 @@
 
 
 # ##############################
-# Define the IP inputs and output 
+# Define the IP inputs and output  names
 # The IP input and outputs are VECTORS ONLY of any size.
 # IMPORTANT NOTICE: It HAS To be set up before runnign make_template.tcl script and DO NOT modify it during the following design phases.
 
