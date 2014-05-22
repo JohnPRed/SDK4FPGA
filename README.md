@@ -83,4 +83,4 @@ ICL SDK4FPGA has been designed to be intuitive and to guide the user during all 
 <img src="doc/figures/icl_sdk4fpga_images.005.jpg" width="600px" />
 </div>
 
-Please refer to the [ICL SDK4FPGA user guide](SDK4FPGA_user_guide.md) for a details.
+Please refer to the [ICL SDK4FPGA user guide](doc/SDK4FPGA_user_guide.md) for a details.
