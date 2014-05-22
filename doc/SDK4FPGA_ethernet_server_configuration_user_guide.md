@@ -12,7 +12,7 @@ To build the software application running on the microprocessor the following st
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.001.jpg" width="600px" />
+	<img src="figures/SDK.001.JPG" width="600px" />
 	</div>
 	<br><br>
 
