@@ -38,6 +38,7 @@ set bits_word_integer_length [lindex $argv 1]
 set bits_word_fraction_length [lindex $argv 2]
 set input_vectors [lindex $argv 3]
 set output_vectors [lindex $argv 4]
+set output_vectors [lindex $argv 5]
 
 set file [open ip_prototype/src/interface_library.h w]
 
@@ -74,7 +75,11 @@ puts $file ""
 puts $file ""
 puts $file "////////////////////////////////////////////////////////////"
 puts $file "//Ethernet interface configuration (UDP or TCP)"
+if { $tcp_udp == 1} { 
+puts $file "#define MY_TCP_UDP 1 //1 for TCP, 0 for UDP"
+} elseif  { $float_fix == 0} { 
 puts $file "#define MY_TCP_UDP 0 //1 for TCP, 0 for UDP"
+}
 puts $file "#define FPGA_IP \"192.168.1.10\" //FPGA IP"
 puts $file "#define FPGA_NM \"255.255.255.0\" //Netmask"
 puts $file "#define FPGA_GW \"192.168.1.1\" //Gateway"

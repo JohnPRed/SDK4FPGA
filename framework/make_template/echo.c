@@ -83,8 +83,8 @@ void print_app_header()
 {
 	xil_printf("\n\r");
 	xil_printf("\n\r");
-	xil_printf("----------------------------- ICL SDK4FPGA ---------------------------------\n\r");
-	xil_printf("--------- (FPGA Interface framework: UPD/IP andTCP/IP server) --------------\n\r");
+	xil_printf("------------------------- ICL SDK4FPGA framework----------------------------\n\r");
+	xil_printf("---------------- (FPGA Interface: UPD/IP andTCP/IP server) -----------------\n\r");
 	xil_printf("----- Copyright (C) 2014 by Andrea Suardi[a.suardi@imperial.ac.uk] ---------\n\r");
 	xil_printf("----------------------------- v1.0 May 2014 --------------------------------\n\r");
 	xil_printf("\n\r");

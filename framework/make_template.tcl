@@ -124,7 +124,7 @@ src $file $input_vectors $output_vectors
 
 #make prototype templates source files
 set file "make_template/make_interface_library_h.tcl"
-src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors
+src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors $tcp_udp
 unset file
 set file "make_template/make_test_HIL_m.tcl"
 src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors $max_vector_length

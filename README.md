@@ -272,24 +272,34 @@ To build the IP design:
 
 ### 6. IP prototype: build
 
-Once the IP has been built, the users can prototype it on an Evaluation Board and etst it via an Hardware In the Loop (HIL) setup. To do so, the FPGA has to be programmed with a configuration file named *bitstream*.
+Once the IP has been built, the users can deploy it on a supported Evaluation Board and test it via an Hardware In the Loop (HIL) setup. Before to give a detail description of this design phase steps, the prototyping setup is presented.
 
 <div style="text-align:center" markdown="1">
-<img src="doc/figures/icl_sdk4fpga_images.010.jpg" width="600px" />
+<img src="doc/figures/icl_sdk4fpga_images.011.jpg" width="600px" />
 </div>
+
+The prototyping setup is composed of two main parts:
+
+* an FPGA on which is running a microprocessor (ARM based) and the user algorithm tested and built during phases 3,4,5. It should be noticed that the user algorithm, even if it is coded using C/C++ language, is not running on the microprocessor, but is an ad hoc physical circuit mapped into the FPGA logic.
+* a host system is a Matlab based application which allow the users to generate the stimulus data and to analyse the FPGA processed data.
+
+The host system and the FPGA communicate via Ethernet interface by means of UDP/IP or TCP/IP packets. On the FPGA side, the microprocessor runs a *baremetal* software application (the application same code can be integrated with an OS based application). It is a lwIP UDP/IP or TCP/IP server that bridges the communication between the physical Ethernet interface, the DDR memory and the designed IP. On the other hand, the host runs a UDP/IP or TCP/IP client accessible from Matlab. 
  
-To build the IP prototype *bitstream*:  
+
+##### Design phase 6 parameters:
+
+	board_name
+	tcp_udp
+
+ 
+
+To build the prototyping setup, the FPGA configuration file, named *bitstream*, as well the software application running on the microprocessor have to built: 
 
 1. Run Vivado TCL shell
-2. type: *vivado -mode tcl -source ip_prototype_build.tcl*  **note: this phase can take several minutes depending on the complexity of the algorithm**
+2. type: *vivado -mode tcl -source ip_prototype_build.tcl*  to build the FPGA configuration file
+**NOTE: this phase can take several minutes depending on the complexity of the algorithm**
 3. Implementation reports including algorithm execution time (expressed in clock cycles), silicon resources and power consumption estimation are available *ip\_prototype/build/reports* folder
-4. When Vivado software has finished to build the FPGA configuration file, a light software application has to be built and run on the FPGA embedded CPU (ARM cortex A9) in order to handle the data communication between the FPGA and an external host. To build this software application the following manual steps have to be performed (**at the moment is not available any scripts that automates them. I would be nice to have one**) :
-    1. Xilinx SDK gui will open on the screen and the just built FPGA *bitstream* is automatically loaded into the SDK project created into *ip\_prototype/build/prj/project\_name.board\_name/prototype.sdk/SDK/SDK_export* folder.  
-    2. Four spaces again.
-
-
-
-
+4. When Vivado Design Suite software has completed the building process, the software application running on the microprocessor has to be built as well. However, building the latter application requires a few manual steps. **At the moment is not available any scripts that automates them. It would be nice to have one.** Please refer to [ICL SDK4FPGA Ethernet server configuration user guide](doc/SDK4FPGA_ethernet_server_configuration_user_guide) for a detailed description.
 
 
 ---
@@ -299,7 +309,5 @@ To build the IP prototype *bitstream*:
 The last project phase consist to 
 
 
-<div style="text-align:center" markdown="1">
-<img src="doc/figures/icl_sdk4fpga_images.011.jpg" width="600px" />
-</div>
+
 

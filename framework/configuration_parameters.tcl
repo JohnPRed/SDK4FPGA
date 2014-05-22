@@ -89,6 +89,9 @@ set FPGA_name "{xc7z020clg484-1}"
 # Set the target evaluation board (zedboard,  microzedboard, zc702, zc706) ONLY if the purpose is to prototype the designed IP
 set board_name "zedboard"
 
+# Set Ethernet communication protocol. Set 0 for UDP/IP or 1 for  TCP/IP  
+set tcp_udp 0
+
 # ##############################
 # Number of time to repeat an ip_design test (test_csim or test_rtlsim) or prototype test(test_hil) using a different stimulus data set.
 set num_simulation 1
