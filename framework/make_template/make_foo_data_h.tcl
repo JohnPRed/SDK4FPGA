@@ -108,7 +108,7 @@ unset tmp_line
 
 puts $file ""
 puts $file ""
-append tmp_line "const unsigned N=" $max_vector_length ";"
+append tmp_line "const unsigned N=" $max_vector_length "; //input and output vector length"
 puts $file $tmp_line
 unset tmp_line
 puts $file ""
