@@ -199,7 +199,7 @@ To run a c-simulation:
  
 1. run Vivado HLS Command Prompt  
 2. type: *vivado_hls -f ip\_design\_test\_csim.tcl*  
-3. simulation results are logged into *ip\_design/test\_csim/results* folder
+3. test results are logged into *ip\_design/test\_csim/results* folder
 
 **NOTE:** all the simulation steps can be repeated automatically setting the `num_simulation` configuration parameter.
 
@@ -216,7 +216,7 @@ To run a RTL-simulation:
 
 1. run Vivado HLS Command Prompt  
 2. type: *vivado_hls -f ip\_design\_test\_rtlsim.tcl*  
-3. simulation results are logged into *ip\_design/test\_rtlsim/results* folder
+3. test results are logged into *ip\_design/test\_rtlsim/results* folder
 
 **NOTE 1:** RTL-simulation can take very long time depending on the complexity of the coded algorithm
 
@@ -293,10 +293,10 @@ The host system and the FPGA communicate via Ethernet interface by means of UDP/
 
  
 
-To build the prototyping setup, the FPGA configuration file, named *bitstream*, as well the software application running on the microprocessor have to built: 
+To build the prototyping setup, the FPGA configuration file, named *bitstream*, as well the software application running on the microprocessor have to be built: 
 
 1. Run Vivado TCL shell
-2. type: *vivado -mode tcl -source ip_prototype_build.tcl*  to build the FPGA configuration file
+2. type: *vivado -mode tcl -source ip\_prototype\_build.tcl*  to build the FPGA configuration file
 **NOTE: this phase can take several minutes depending on the complexity of the algorithm**
 3. Implementation reports including algorithm execution time (expressed in clock cycles), silicon resources and power consumption estimation are available *ip\_prototype/build/reports* folder
 4. When Vivado Design Suite software has completed the building process, the software application running on the microprocessor has to be built as well. However, building the latter application requires a few manual steps. **At the moment is not available any scripts that automates them. It would be nice to have one.** Please refer to [ICL SDK4FPGA Ethernet server configuration user guide](doc/SDK4FPGA_ethernet_server_configuration_user_guide.md) for a detailed description.
@@ -306,7 +306,113 @@ To build the prototyping setup, the FPGA configuration file, named *bitstream*, 
 
 ### 7. IP prototype: test HIL
 
-The last project phase consist to 
+Once the FPGA has been correctly configured, the users can run HIL tests.
+They can take full control of the designed IP directly from Matlab via a function, named `FPGAclientMATLAB`, provided within ICL SDK4FPGA framework. The source code of this function is available in *ip\_prototype/src/FPGAclientMATLAB.c* file.
+
+##### `FPGAclientMATLAB` function declaration
+
+	FPGAclientMATLAB(data_to_send,packet_type,packet_internal_ID,packet_output_size);
+
+where:
+
+* `packet_type` defines the packet type. It supports:
+	*  `packet_type=1` IP reset
+	*  `packet_type=2` IP start computation
+	*  `packet_type=3` Send input vector to the IP
+	*  `packet_type=4` Receive output vector form the IP
+* `data_to_send` is the user algorithm input data vector
+* `packet_internal_ID`is the input and output vector unique identifier. As example, let suppose the input vectors are "x0" "x1", thus `packet_internal_ID=0` for vector "x0" and `packet_internal_ID=1` for vector "x1". On the other hand, if the output vector is "y0", the associated identifier is  `packet_internal_ID=0`.
+* `packet_output_size` identify the number of data to receive form the IP. It is the size of the output vector.
+
+**NOTE 1:** to use the above function all the parameter has to be passed.
+
+**NOTE 2: do not modify the vector unique identifier assigned to the input and output vectors.**
+
+##### `FPGAclientMATLAB` function use
+
+To control the designed IP, `FPGAclientMATLAB` has to be called with the following order: 
+
+1. **IP reset**
+	* `packet_type=1`
+	* remaining parameters can have any values
+	
+	The IP variables are reset to their initial values.
+
+	<div style="text-align:center" markdown="1">
+	<img src="doc/figures/icl_sdk4fpga_images.013.jpg" width="600px" />
+	</div>
+
+
+2. **Send input vectors to the IP**
+
+	This step has to be repeated for each input vector to be sent to the IP
+
+	* `packet_type=3`
+	* `data_to_send` is input vector data 
+	* `packet_internal_ID` is the input vector unique identifier
+	* remaining parameters can have any values
+
+	The input vector is written to the DDR memory to a specific location. Please refer to *ip\_prototype\doc\readme.md* for details on how the vectors are stored in the DDR memory.
+
+	<div style="text-align:center" markdown="1">
+	<img src="doc/figures/icl_sdk4fpga_images.012.jpg" width="600px" />
+	</div>
+
+
+3. **IP start computation**
+
+	* `packet_type=2`
+	* remaining parameters can have any values.
+
+	The microprocessor on the FPGA send configuration settings to the IP (location of the input and output vectors in the DDR memory) and kick off the algorithm execution.
+
+	<div style="text-align:center" markdown="1">
+	<img src="doc/figures/icl_sdk4fpga_images.013.jpg" width="600px" />
+	</div>
+
+	Once the microprocessor on the FPGA has started the IP, the IP:
+
+	1. fetches the input data vectors from the DDR memory 
+	2. performs the computations
+	3. write the results (output vectors)  to the DDR memory
+	4. informs the microprocessor that it has finished  
+
+
+	<div style="text-align:center" markdown="1">
+	<img src="doc/figures/icl_sdk4fpga_images.014.jpg" width="600px" />
+	</div>
+
+4. **Receive output vector form the IP**
+
+	This step has to be repeated for each output vector to be sent to the IP
+
+	* `packet_type=4`
+	* `packet_internal_ID` is the output vector unique identifier
+	* `packet_output_size` is the number of data for current output vector
+	* remaining parameters can have any values
+
+	The output vector is read by the Matlab application from a specific location in the DDR memory. Please refer to *ip\_prototype\doc\readme.md* for details on how the vectors are stored in the DDR memory.
+
+	<div style="text-align:center" markdown="1">
+	<img src="doc/figures/icl_sdk4fpga_images.015.jpg" width="600px" />
+	</div>
+
+
+
+##### Run HIL test
+
+An example Matlab application about the use of the function is available with the Matlab script *ip\_prototype/src/HIL\_test.m*.
+
+To run the HIL test the following steps have to be done: 
+
+1. Run Matlab
+2. Set the working directory *ip\_prototype/src* 
+3. Compile the `FPGAclientMATLAB` function. Type: *mex FPGAclientMATLAB.c* Note that a C/C++ compiler has to be installed.
+2. Run *ip\_prototype/src/HIL\_test.m* script.
+3. test results are logged into *ip\_prototype/test\_HIL/results* folder
+
+**NOTE:** all the simulation steps can be repeated automatically editing the `num_simulation` variable declared in ip\_prototype/src/HIL\_test.m* Matlab script.
+
 
 
 

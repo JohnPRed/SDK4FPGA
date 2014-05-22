@@ -12,7 +12,7 @@ To build the software application running on the microprocessor the following st
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.001.JPG" width="600px" />
+	<img src="figures/SDK_001.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -20,7 +20,7 @@ To build the software application running on the microprocessor the following st
  
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.002.JPG" width="600px" />
+	<img src="figures/SDK_002.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -28,7 +28,7 @@ To build the software application running on the microprocessor the following st
  
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.003.JPG" width="600px" />
+	<img src="figures/SDK_003.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -39,7 +39,7 @@ the local driver repository search path
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.004.JPG" width="600px" />
+	<img src="figures/SDK_004.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -50,7 +50,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.005.JPG" width="600px" />
+	<img src="figures/SDK_005.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -63,7 +63,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.006.JPG" width="600px" />
+	<img src="figures/SDK_006.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -73,7 +73,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.007.JPG" width="600px" />
+	<img src="figures/SDK_007.jpg" width="600px" />
 	</div>
 	<br><br>
 
@@ -81,7 +81,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
-	<img src="figures/SDK.008.JPG" width="600px" />
+	<img src="figures/SDK_008.jpg" width="600px" />
 	</div>
 	<br><br>
 
