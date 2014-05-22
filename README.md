@@ -299,7 +299,7 @@ To build the prototyping setup, the FPGA configuration file, named *bitstream*, 
 2. type: *vivado -mode tcl -source ip_prototype_build.tcl*  to build the FPGA configuration file
 **NOTE: this phase can take several minutes depending on the complexity of the algorithm**
 3. Implementation reports including algorithm execution time (expressed in clock cycles), silicon resources and power consumption estimation are available *ip\_prototype/build/reports* folder
-4. When Vivado Design Suite software has completed the building process, the software application running on the microprocessor has to be built as well. However, building the latter application requires a few manual steps. **At the moment is not available any scripts that automates them. It would be nice to have one.** Please refer to [ICL SDK4FPGA Ethernet server configuration user guide](doc/SDK4FPGA_ethernet_server_configuration_user_guide) for a detailed description.
+4. When Vivado Design Suite software has completed the building process, the software application running on the microprocessor has to be built as well. However, building the latter application requires a few manual steps. **At the moment is not available any scripts that automates them. It would be nice to have one.** Please refer to [ICL SDK4FPGA Ethernet server configuration user guide](doc/SDK4FPGA_ethernet_server_configuration_user_guide.md) for a detailed description.
 
 
 ---
