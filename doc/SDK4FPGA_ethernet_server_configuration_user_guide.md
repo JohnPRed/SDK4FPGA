@@ -85,4 +85,4 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 	</div>
 	<br><br>
 
-13. The FPGA is now configured correctly. Please refer for design phase 7 in [README](../../README.md) to run HIL tests.
+13. The FPGA is now configured correctly. Please refer for design phase 7 in [README](../README.md) to run HIL tests.
