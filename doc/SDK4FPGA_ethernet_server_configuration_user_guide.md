@@ -5,10 +5,10 @@ Supported by the EPSRC Impact Acceleration grant number EP/K503733/1
 
 ---
 
-To build the software application running on the microprocessor the following steps has to be done:
+To build the software application running on the microprocessor the following steps have to be done:
 
-1. Once Vivado Design Suite has completed the project building on design phase 5, automatically Xilinx SDK GUI will pop up on the screen.
-2. A new SDK project will be created into the *ip\_prototype/build/prj/project\_name.board\_name/prototype.sdk/SDK/SDK_export* folder. Where `project_name` and `board_name` are the configuration parameter defined in *configuration\_parameters.tcl* file.
+1. Once Vivado Design Suite has completed to build the project on design phase 5, Xilinx SDK GUI automatically will pop up on the screen.
+2. A new SDK project is created into the *ip\_prototype/build/prj/project\_name.board\_name/prototype.sdk/SDK/SDK_export* folder. Where `project_name` and `board_name` are the configuration parameter defined in *configuration\_parameters.tcl* file.
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
@@ -16,7 +16,7 @@ To build the software application running on the microprocessor the following st
 	</div>
 	<br><br>
 
-3. In SDK, choose "File" -> "New" -> "Application Project", assign a project name (as example, lets call it "fpga_test") and click the "Next" button.
+3. In SDK, choose "File" -> "New" -> "Application Project", assign a project name (as example, let call it "fpga_test") and click the "Next" button.
  
 	<br><br>
 	<div style="text-align:center" markdown="1">
@@ -24,7 +24,7 @@ To build the software application running on the microprocessor the following st
 	</div>
 	<br><br>
 
-4. Select the *lwIP Echo Server* example design and click "Finish" button. The selected software application example project will created.
+4. Select the *lwIP Echo Server* example design and click the "Finish" button. The selected software application example project will be created.
  
 	<br><br>
 	<div style="text-align:center" markdown="1">
@@ -54,9 +54,9 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 	</div>
 	<br><br>
 
-8. The SDK project should now build without errors: in SDK select "Project" -> "Clean" -> "OK" to make a clean build of the software application.
+8. The SDK project should now build without any errors: in SDK select "Project" -> "Clean" -> "OK" to make a clean build of the software application.
 
-9. Connect the Evaluation Board to your host system. Please refer to the Evaluation Board vendor user guide for setting up the requested connections: a USB JTAG programming cable for programming the FPGA and UART-USB cable for connecting to a serial terminal.
+9. Connect the Evaluation Board to your host system. Please refer to the Evaluation Board vendors' user guide for setting up the requested connections: a USB JTAG programming cable for programming the FPGA and UART-USB cable for connecting with a serial terminal are requested.
 
 10.  In SDK select "Xilinx Tools" -> "Program FPGA" -> "Program" to program FPGA configuration file, named *bitstream*.
 
@@ -69,7 +69,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 
 11. Open a serial terminal with the following settings: baud Rate to 115200, parity to None and data Bits to 8.
 
-12. Start the software application running on the microprocessor: right click on the microprocessor configuration file, output of clean build (step 8) and select "Launch on Hardware"
+12. Start the software application running on the microprocessor: right click on the microprocessor configuration file (*fpga_test.elf*) output of clean build (step 8) and select "Launch on Hardware"
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
@@ -77,7 +77,7 @@ Check that drivers for “foo\_0” is "foo_top" and not "generic"
 	</div>
 	<br><br>
 
-	The following messages will be shown on the console if UDP/IP server configuration has been selected.
+	The following messages will be shown on the console if UDP/IP server configuration has been selected. A similar one if a TCP/IP server if selected instead.
 
 	<br><br>
 	<div style="text-align:center" markdown="1">
