@@ -45,6 +45,7 @@ set bits_word_fraction_length [lindex $argv 5]
 
 set file [open  ip_design/doc/readme.txt w]
 
+set tmp_line ""
 unset tmp_line
 
 puts $file "/*"
