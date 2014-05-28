@@ -150,6 +150,7 @@ unset tmp_line
 puts $file ""
 puts $file "	FILE *stimfile;"
 puts $file "	FILE * pFile;"
+puts $file "	int count_data;"
 puts $file ""
 foreach i $input_vectors {
 	append tmp_line "	float " $i "_in\[N\];"
@@ -193,16 +194,21 @@ foreach i $input_vectors {
 	puts $file $tmp_line
 	unset tmp_line
 	puts $file ""
+	puts $file "	count_data=0;"
+	puts $file ""
 	append tmp_line "	for (float f; input" $m " >> f; )"
 	puts $file $tmp_line
 	unset tmp_line
+	puts $file "	{"
 	append tmp_line "		myValues" $m ".push_back(f);"
 	puts $file $tmp_line
 	unset tmp_line
+	puts $file "		count_data++;"
+	puts $file "	}"
 	
 	puts $file ""
 	puts $file "	//fill in input vector"
-	puts $file "	for (int i = 0; i < N; i++)"
+	puts $file "	for (int i = 0; (i < N || i<count_data); i++)"
 	puts $file "	{"
 	append tmp_line "		" $i "_in\[i\]=(float)myValues" $m "\[i]\;"
 	puts $file $tmp_line
