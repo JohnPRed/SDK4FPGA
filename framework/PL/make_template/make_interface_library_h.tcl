@@ -39,6 +39,7 @@ set bits_word_fraction_length [lindex $argv 2]
 set input_vectors [lindex $argv 3]
 set output_vectors [lindex $argv 4]
 set tcp_udp [lindex $argv 5]
+set mem_base_address [lindex $argv 6]
 
 set file [open ip_prototype/src/interface_library.h w]
 
@@ -105,13 +106,13 @@ puts $file ""
 puts $file "//FPGA vectors memory maps"
 set m 0
 foreach i $input_vectors {
-	append tmp_line "#define " $i "_IN_DEFINED_MEM_ADDRESS " [expr $m*$max_vector_length*4]
+	append tmp_line "#define " $i "_IN_DEFINED_MEM_ADDRESS "  [expr ($mem_base_address/256)*256+$m*$max_vector_length*4]
 	puts $file $tmp_line
 	unset tmp_line
 	incr m
 }
 foreach i $output_vectors {
-	append tmp_line "#define " $i "_OUT_DEFINED_MEM_ADDRESS " [expr $m*$max_vector_length*4]
+	append tmp_line "#define " $i "_OUT_DEFINED_MEM_ADDRESS " [expr ($mem_base_address/256)*256+$m*$max_vector_length*4]
 	puts $file $tmp_line
 	unset tmp_line
 	incr m

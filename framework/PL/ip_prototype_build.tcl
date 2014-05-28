@@ -83,7 +83,7 @@ src $file
 
 # Update interface_library.h header file
 set file "make_template/make_interface_library_h.tcl"
-src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors $tcp_udp
+src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors $tcp_udp $mem_base_address
 
 # ############################# 
 # ############################# 

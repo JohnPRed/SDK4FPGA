@@ -46,6 +46,7 @@ set mem_base_address [lindex $argv 6]
 
 set file [open  ip_prototype/doc/readme.txt w]
 
+set tmp_line ""
 unset tmp_line
 
 puts $file "/*"
@@ -116,6 +117,7 @@ puts $file ""
 puts $file ""
 puts $file ""
 puts $file "Input and output vectors has been mapped to external DDR memory at the following adresses:"
+puts $file ""
 puts $file "Name			| Base address in Byte"
 puts $file ""
 set m 0
@@ -132,8 +134,33 @@ foreach i $output_vectors {
 		incr m
 }
 puts $file ""
-puts $file "The external DDR memory is shared memory between the CPU embedded into the FPGA and the Algortihm implemented into teh FPGa programmable logic (PL)."
-
+puts $file "The external DDR memory is shared memory between the CPU embedded into the FPGA and the Algortihm implemented into the FPGa programmable logic (PL)."
+puts $file ""
+puts $file ""
+puts $file ""
+puts $file "To send input vectors from the host (Matlab) to the FPGA call matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
+puts $file ""
+puts $file "Input vector name		| Packet type 	|	Packet internal ID 	| Data to send	| Packet output size"
+set m 0
+foreach i $input_vectors { 
+		append tmp_line $i "			 			| 3				| " $m "						| data vector	| 0"
+		puts $file $tmp_line
+		unset tmp_line
+		incr m
+}
+puts $file ""
+puts $file ""
+puts $file ""
+puts $file "To read output vectors from the FPGA to the host (Matlab) call matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
+puts $file ""
+puts $file "Output vector name		| Packet type 	|	Packet internal ID 	| Data to send	| Packet output size"
+set m 0
+foreach i $output_vectors { 
+		append tmp_line $i "			 			| 4				| " $m "						| 0				| vector length"
+		puts $file $tmp_line
+		unset tmp_line
+		incr m
+}
 
 close $file
 
