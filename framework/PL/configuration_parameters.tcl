@@ -92,6 +92,9 @@ set board_name "zedboard"
 # Set Ethernet communication protocol. Set 0 for UDP/IP or 1 for  TCP/IP  
 set tcp_udp 0
 
+# for PROTOTYPE ONLY: set the DDR memory region  (region base address in Bytes) that you want to allocate for storing input and output vectors
+set mem_base_address 33554432; #32 MB
+
 # ##############################
 # Number of time to repeat an ip_design test (test_csim or test_rtlsim) or prototype test(test_hil) using a different stimulus data set.
 set num_simulation 1

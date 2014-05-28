@@ -118,8 +118,13 @@ src $file $input_vectors $output_vectors $max_vector_length
 unset file
 set file "make_template/make_write_stimulus_m.tcl"
 src $file $input_vectors $output_vectors $max_vector_length
+unset file
 set file "make_template/make_read_results_m.tcl"
 src $file $input_vectors $output_vectors
+unset file
+set file "make_template/make_ip_design_readme_txt.tcl"
+src $file $input_vectors $output_vectors $max_vector_length $float_fix $bits_word_integer_length $bits_word_fraction_length
+unset file
 
 
 #make prototype templates source files
@@ -131,6 +136,9 @@ src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input
 unset file
 set file "make_template/make_echo_c.tcl"
 src $file $input_vectors $output_vectors
+unset file
+set file "make_template/make_ip_prototype_readme_txt.tcl"
+src $file $input_vectors $output_vectors $max_vector_length $float_fix $bits_word_integer_length $bits_word_fraction_length $mem_base_address
 unset file
 file copy -force  make_template/main.c ip_prototype/src
 file copy -force  make_template/MicroZed_PS_properties_v02.tcl ip_prototype/src
