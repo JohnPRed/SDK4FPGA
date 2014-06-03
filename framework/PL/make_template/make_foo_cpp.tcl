@@ -162,6 +162,49 @@ foreach i $output_vectors {
 	unset tmp_line
 }
 puts $file ""
+
+
+puts $file "	#ifndef __SYNTHESIS__"
+puts $file "	//Any system calls which manage memory allocation within the system, for example malloc(), alloc() and free(), must be removed from the design code prior to synthesis. "
+puts $file ""
+foreach i $input_vectors {
+	append tmp_line "	data_t_interface *" $i "_in;"
+	puts $file $tmp_line
+	unset tmp_line
+	append tmp_line "	" $i "_in = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+foreach i $output_vectors {
+	append tmp_line "	data_t_interface *" $i "_out;"
+	puts $file $tmp_line
+	unset tmp_line
+	append tmp_line "	" $i "_out = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+puts $file ""
+foreach i $input_vectors {
+	append tmp_line "	data_t *" $i "_in_int;"
+	puts $file $tmp_line
+	unset tmp_line
+	append tmp_line "	" $i "_in_int = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+foreach i $output_vectors {
+	append tmp_line "	data_t *" $i "_out_int;"
+	puts $file $tmp_line
+	unset tmp_line
+	append tmp_line "	" $i "_out_int = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+puts $file ""
+
+puts $file "	#else"
+puts $file "	//for synthesis"
+puts $file ""
 foreach i $input_vectors {
 	append tmp_line "	data_t_interface  " $i "_in\[N\];"
 	puts $file $tmp_line
@@ -184,8 +227,15 @@ foreach i $output_vectors {
 	unset tmp_line
 }
 puts $file ""
+puts $file "	#endif"
+
+
+
 puts $file "	*status=0; //IP running"
 puts $file ""
+
+
+puts $file "	#ifdef FIX_IMPLEMENTATION"
 puts $file "	///////////////////////////////////////"
 puts $file "	//load input vectors from memory (DDR)"
 puts $file ""
@@ -206,6 +256,21 @@ foreach i $input_vectors {
 }
 puts $file "	}"
 puts $file ""
+puts $file "	#endif"
+puts $file ""
+puts $file "	#ifdef FLOAT_IMPLEMENTATION"
+puts $file "	///////////////////////////////////////"
+puts $file "	//load input vectors from memory (DDR)"
+puts $file ""
+foreach i $input_vectors {
+	append tmp_line "	memcpy(" $i "_in_int,(const data_t_memory*)(memory_inout+byte_" $i "_in_offset/4),N*sizeof(data_t_memory));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+puts $file ""
+puts $file "	#endif"
+
+
 puts $file ""
 puts $file "	///////////////////////////////////////"
 puts $file "	//USER algorithm function (foo_user.cpp) call"
@@ -250,6 +315,9 @@ foreach i $output_vectors {
 }
 puts $file ""
 puts $file ""
+
+
+puts $file "	#ifdef FIX_IMPLEMENTATION"
 puts $file "	///////////////////////////////////////"
 puts $file "	//store output vectors to memory (DDR)"
 puts $file ""
@@ -270,6 +338,20 @@ foreach i $output_vectors {
 	unset tmp_line
 }
 puts $file ""
+puts $file "	#endif"
+puts $file ""
+puts $file "	#ifdef FLOAT_IMPLEMENTATION"
+puts $file "	///////////////////////////////////////"
+puts $file "	//write results vector y_out to DDR"
+foreach i $output_vectors {
+	append tmp_line "	memcpy((data_t_memory *)(memory_inout+byte_" $i "_out_offset/4)," $i "_out_int,N*sizeof(data_t_memory));"
+	puts $file $tmp_line
+	unset tmp_line
+}
+puts $file ""
+puts $file "	#endif"
+
+
 puts $file ""
 puts $file "	*status=1; //IP stop"
 puts $file ""
