@@ -75,7 +75,7 @@ puts $file "#include \"foo_data.h\""
 puts $file ""
 puts $file ""
 puts $file ""
-puts $file "void foo	(	volatile data_t_memory *memory_inout,"
+puts $file "void foo	(	"
 
 foreach i $input_vectors {
 	append tmp_line "				uint32_t byte_" $i "_in_offset,"
@@ -88,7 +88,7 @@ foreach i $output_vectors {
 	unset tmp_line
 }
 
-puts $file "				uint32_t* status);"
+puts $file "				volatile data_t_memory *memory_inout);"
 puts $file ""
 puts $file ""
 puts $file "using namespace std;"
@@ -128,7 +128,6 @@ foreach i $output_vectors {
 }
 puts $file ""
 puts $file "	int32_t tmp_value;"
-puts $file "	uint32_t status;"
 puts $file ""
 puts $file "	//assign the input/output vectors base address in the DDR memory"
 foreach i $input_vectors {
@@ -152,19 +151,30 @@ puts $file "	FILE *stimfile;"
 puts $file "	FILE * pFile;"
 puts $file "	int count_data;"
 puts $file ""
+#~ foreach i $input_vectors {
+	#~ append tmp_line "	float " $i "_in\[N\];"
+	#~ puts $file $tmp_line
+	#~ unset tmp_line
+#~ }
+#~ foreach i $output_vectors {
+	#~ append tmp_line "	float " $i "_out\[N\];"
+	#~ puts $file $tmp_line
+	#~ unset tmp_line
+#~ }	
+puts $file ""
 foreach i $input_vectors {
-	append tmp_line "	float " $i "_in\[N\];"
+	append tmp_line "	float *" $i "_in;"
+	puts $file $tmp_line
+	unset tmp_line
+	append tmp_line "	" $i "_in = (float *)malloc(N*sizeof (float));"
 	puts $file $tmp_line
 	unset tmp_line
 }
 foreach i $output_vectors {
-	append tmp_line "	float " $i "_out\[N\];"
+	append tmp_line "	float *" $i "_out;"
 	puts $file $tmp_line
 	unset tmp_line
-}	
-puts $file ""
-foreach i $output_vectors {
-	append tmp_line "	float " $i "_out_log\[N\];"
+	append tmp_line "	" $i "_out = (float *)malloc(N*sizeof (float));"
 	puts $file $tmp_line
 	unset tmp_line
 }
@@ -236,7 +246,7 @@ puts $file ""
 puts $file "	/////////////////////////////////////"
 puts $file "	// foo c-simulation"
 puts $file "	"
-puts $file "	foo(	memory_inout,"
+puts $file "	foo(	"
 foreach i $input_vectors {
 	append tmp_line "				byte_" $i "_in_offset,"
 	puts $file $tmp_line
@@ -247,7 +257,7 @@ foreach i $output_vectors {
 	puts $file $tmp_line
 	unset tmp_line
 }
-puts $file "				&status);"
+puts $file "				memory_inout);"
 puts $file "	"
 puts $file "	"
 foreach i $output_vectors {

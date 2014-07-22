@@ -104,7 +104,7 @@ foreach i $output_vectors {
 }
 puts $file ""
 puts $file ""
-puts $file "void foo	(	volatile data_t_memory *memory_inout,"
+puts $file "void foo	("
 
 foreach i $input_vectors {
 	append tmp_line "				uint32_t byte_" $i "_in_offset,"
@@ -125,7 +125,7 @@ foreach i $output_vectors {
 	incr m
 	}
 
-puts $file "				uint32_t* status)"
+puts $file "				volatile data_t_memory *memory_inout)"
 puts $file "{"
 puts $file ""
 puts $file "	//ap_bus is the only valid nativeVivado HLSinterface for memory mapped master ports"
@@ -139,9 +139,6 @@ puts $file ""
 puts $file "	//Foo function return is assigned to an AXI4-slave interface named BUS_A"
 puts $file "	#pragma HLS RESOURCE variable=return core=AXI4LiteS metadata=\"-bus_bundle BUS_A\""
 puts $file ""
-puts $file "	//Port status is assigned to an AXI4-slave interface named BUS_A"
-puts $file "	#pragma HLS INTERFACE ap_none register     port=status"
-puts $file "	#pragma HLS RESOURCE variable=status core=AXI4LiteS metadata=\"-bus_bundle BUS_A\""
 
 foreach i $input_vectors {
 	puts $file ""
@@ -188,7 +185,7 @@ foreach i $input_vectors {
 	append tmp_line "	data_t *" $i "_in_int;"
 	puts $file $tmp_line
 	unset tmp_line
-	append tmp_line "	" $i "_in_int = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	append tmp_line "	" $i "_in_int = (data_t *)malloc(N*sizeof (data_t));"
 	puts $file $tmp_line
 	unset tmp_line
 }
@@ -196,7 +193,7 @@ foreach i $output_vectors {
 	append tmp_line "	data_t *" $i "_out_int;"
 	puts $file $tmp_line
 	unset tmp_line
-	append tmp_line "	" $i "_out_int = (data_t_interface *)malloc(N*sizeof (data_t_interface));"
+	append tmp_line "	" $i "_out_int = (data_t *)malloc(N*sizeof (data_t));"
 	puts $file $tmp_line
 	unset tmp_line
 }
@@ -231,7 +228,6 @@ puts $file "	#endif"
 
 
 
-puts $file "	*status=0; //IP running"
 puts $file ""
 
 
@@ -353,7 +349,6 @@ puts $file "	#endif"
 
 
 puts $file ""
-puts $file "	*status=1; //IP stop"
 puts $file ""
 puts $file "}"
 close $file

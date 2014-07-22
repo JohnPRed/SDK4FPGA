@@ -67,7 +67,7 @@ set bits_word_fraction_length 8;
 
 # ##############################
 # FPGA design clock frequency [MHz]
-set fclk 150; 
+set fclk 100; 
 
 # ##############################
 # Set FPGA device name according to your target FPGA. 
@@ -104,5 +104,5 @@ set rtl_simulator "xsim"
 
 # ##############################
 # Set Matlab path. Matlab will be called in batch mode to generate input stimulous and read back the test results
-set MatlabPath "C:/Program Files (x86)/MATLAB/R2013b/bin/matlab.exe";
+set MatlabPath "C:/Program Files/MATLAB/R2014a/bin/matlab.exe";
 

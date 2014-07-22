@@ -151,6 +151,11 @@ if {$board_name == "zedboard"} {
 
 	#connect IP to ARM processor (AXI master interface to ARM S_AXI_HP0 )
 	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/foo_0/M_AXI_MEMORY_INOUT" Clk "Auto" }  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+	
+	#set PL clock at fclk
+	startgroup
+	set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ $fclk CONFIG.PCW_EN_CLK0_PORT {1} ] [get_bd_cells processing_system7_0]
+	endgroup
 
 	#reset project
 	reset_target all [get_files  prototype.srcs/sources_1/bd/design_1/design_1.bd]
@@ -222,6 +227,11 @@ if {$board_name == "zedboard"} {
 
 	#connect IP to ARM processor (AXI master interface to ARM S_AXI_HP0 )
 	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/foo_0/M_AXI_MEMORY_INOUT" Clk "Auto" }  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+	
+	#set PL clock at fclk
+	startgroup
+	set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ $fclk CONFIG.PCW_EN_CLK0_PORT {1} ] [get_bd_cells processing_system7_0]
+	endgroup
 
 	#reset project
 	reset_target all [get_files  prototype.srcs/sources_1/bd/design_1/design_1.bd]
@@ -251,25 +261,19 @@ if {$board_name == "zedboard"} {
 	#create block diagram
 	create_bd_design "design_1"
 
-	#Add Zynq IP
-	startgroup
-	create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.4 processing_system7_0
-	endgroup
+	# Create interface ports
+	set DDR [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddrx_rtl:1.0 DDR ]
+	set FIXED_IO [ create_bd_intf_port -mode Master -vlnv xilinx.com:display_processing_system7:fixedio_rtl:1.0 FIXED_IO ]
+	  
+	# Create instance: proc_sys_reset, and set properties
+	set proc_sys_reset [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset ]
+
+	# Create instance: processing_system7_0, and set properties
+	set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.4 processing_system7_0 ]
+	set_property -dict [ list CONFIG.PCW_TTC1_PERIPHERAL_ENABLE {1} CONFIG.PCW_WDT_PERIPHERAL_ENABLE {1} CONFIG.preset {ZC706*}  ] $processing_system7_0
 	
-	# configure Zynq
-	startgroup
-	set_property -dict [list CONFIG.PCW_UIPARAM_DDR_ROW_ADDR_COUNT {15} CONFIG.PCW_UIPARAM_DDR_T_RC {49.5} CONFIG.PCW_UIPARAM_DDR_T_RAS_MIN {36.0} CONFIG.PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_0 {0.226} CONFIG.PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_1 {0.278} CONFIG.PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_2 {0.184} CONFIG.PCW_UIPARAM_DDR_DQS_TO_CLK_DELAY_3 {0.309} CONFIG.PCW_UIPARAM_DDR_BOARD_DELAY0 {0.521} CONFIG.PCW_UIPARAM_DDR_BOARD_DELAY1 {0.636} CONFIG.PCW_UIPARAM_DDR_BOARD_DELAY2 {0.54} CONFIG.PCW_UIPARAM_DDR_BOARD_DELAY3 {0.621} CONFIG.PCW_UIPARAM_DDR_PARTNO {Custom} CONFIG.PCW_UIPARAM_DDR_TRAIN_WRITE_LEVEL {1} CONFIG.PCW_UIPARAM_DDR_TRAIN_READ_GATE {1} CONFIG.PCW_UIPARAM_DDR_TRAIN_DATA_EYE {1} CONFIG.PCW_UIPARAM_DDR_USE_INTERNAL_VREF {1}] [get_bd_cells processing_system7_0]
-	endgroup
-	
-	# configure Zynq
-	startgroup
-	set_property -dict [list CONFIG.PCW_PRESET_BANK0_VOLTAGE {LVCMOS 1.8V} CONFIG.PCW_PRESET_BANK1_VOLTAGE {LVCMOS 1.8V} CONFIG.PCW_QSPI_PERIPHERAL_ENABLE {1} CONFIG.PCW_ENET0_PERIPHERAL_ENABLE {1} CONFIG.PCW_ENET0_ENET0_IO {MIO 16 .. 27} CONFIG.PCW_ENET0_RESET_ENABLE {1} CONFIG.PCW_ENET0_RESET_IO {MIO 47} CONFIG.PCW_SD0_PERIPHERAL_ENABLE {1} CONFIG.PCW_UART1_PERIPHERAL_ENABLE {1} CONFIG.PCW_WDT_PERIPHERAL_ENABLE {1} CONFIG.PCW_TTC1_PERIPHERAL_ENABLE {1} CONFIG.PCW_PJTAG_PERIPHERAL_ENABLE {1} CONFIG.PCW_USB0_PERIPHERAL_ENABLE {1} CONFIG.PCW_USB0_RESET_ENABLE {1} CONFIG.PCW_USB0_RESET_IO {MIO 7} CONFIG.PCW_I2C0_PERIPHERAL_ENABLE {1} CONFIG.PCW_I2C0_I2C0_IO {MIO 50 .. 51} CONFIG.PCW_I2C0_RESET_ENABLE {1} CONFIG.PCW_I2C0_RESET_IO {MIO 46} CONFIG.PCW_GPIO_MIO_GPIO_ENABLE {1}] [get_bd_cells processing_system7_0]
-	endgroup
-	
-	# configure Zynq
-	startgroup
-	set_property -dict [list CONFIG.PCW_SDIO_PERIPHERAL_FREQMHZ {50} CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {100} CONFIG.PCW_QSPI_GRP_SINGLE_SS_ENABLE {0} CONFIG.PCW_QSPI_GRP_IO1_ENABLE {1} CONFIG.PCW_QSPI_GRP_FBCLK_ENABLE {1}] [get_bd_cells processing_system7_0]
-	endgroup
+	connect_bd_intf_net -intf_net processing_system7_0_ddr [get_bd_intf_ports DDR] [get_bd_intf_pins processing_system7_0/DDR]
+	connect_bd_intf_net -intf_net processing_system7_0_fixed_io [get_bd_intf_ports FIXED_IO] [get_bd_intf_pins processing_system7_0/FIXED_IO]
 	
 	# save design
 	save_bd_design
@@ -278,17 +282,10 @@ if {$board_name == "zedboard"} {
 	set_property ip_repo_paths  $source_dir [current_fileset]
 	update_ip_catalog
 
-	#open block diagram
-	open_bd_design {prototype.srcs/sources_1/bd/design_1/design_1.bd}
-
-	#connect FPGA pins
-	apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" apply_board_preset "1" Master "Disable" Slave "Disable" }  [get_bd_cells processing_system7_0]
-
 	#add designed IP
 	startgroup
 	create_bd_cell -type ip -vlnv icl.ac.uk:hls:foo:1.0 foo_0
 	endgroup
-
 	#connect IP to ARM processor (AXI slave interface)
 	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/processing_system7_0/M_AXI_GP0" Clk "Auto" }  [get_bd_intf_pins foo_0/S_AXI_BUS_A]
 
@@ -298,7 +295,12 @@ if {$board_name == "zedboard"} {
 	endgroup
 
 	#connect IP to ARM processor (AXI master interface to ARM S_AXI_HP0 )
-	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/foo_0/M_AXI_A" Clk "Auto" }  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/foo_0/M_AXI_MEMORY_INOUT" Clk "Auto" }  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+		
+	#set PL clock at fclk
+	startgroup
+	set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ $fclk CONFIG.PCW_EN_CLK0_PORT {1} ] [get_bd_cells processing_system7_0]
+	endgroup
 
 	#reset project
 	reset_target all [get_files  prototype.srcs/sources_1/bd/design_1/design_1.bd]
@@ -356,7 +358,6 @@ if {$board_name == "zedboard"} {
 
 	#connect IP to ARM processor (AXI slave interface)
 	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/processing_system7_0/M_AXI_GP0" Clk "Auto" }  [get_bd_intf_pins foo_0/S_AXI_BUS_A]
-	
 
 	#expose ARM core S_AXI_HP0 port
 	startgroup
@@ -365,6 +366,11 @@ if {$board_name == "zedboard"} {
 
 	#connect IP to ARM processor (AXI master interface to ARM S_AXI_HP0 )
 	apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config {Master "/foo_0/M_AXI_MEMORY_INOUT" Clk "Auto" }  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
+	
+	#set PL clock at fclk
+	startgroup
+	set_property -dict [list CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ $fclk CONFIG.PCW_EN_CLK0_PORT {1} ] [get_bd_cells processing_system7_0]
+	endgroup
 
 	#reset project
 	reset_target all [get_files  prototype.srcs/sources_1/bd/design_1/design_1.bd]
@@ -444,9 +450,12 @@ append source_file "prototype.runs/impl_1/design_1_wrapper_utilization_placed.rp
 file copy -force $source_file $target_file_dir
 unset source_file
 
-export_hardware [get_files prototype.srcs/sources_1/bd/design_1/design_1.bd] [get_runs impl_1] -bitstream
 
-launch_sdk -bit prototype.sdk/SDK/SDK_Export/hw/design_1_wrapper.bit -workspace prototype.sdk/SDK/SDK_Export -hwspec prototype.sdk/SDK/SDK_Export/hw/design_1.xml
+file mkdir prototype.sdk
+file copy -force prototype.runs/impl_1/design_1_wrapper.sysdef prototype.sdk/design_1_wrapper.hdf
+
+launch_sdk -workspace prototype.sdk -hwspec prototype.sdk/design_1_wrapper.hdf
+
 
 close_project
 

@@ -183,7 +183,6 @@ void udp_server_function(void *arg, struct udp_pcb *pcb,
 							{
 								if (DEBUG){
 									printf("The core is ready to be used\n");
-									printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
 								}
 							}
 							else
@@ -229,18 +228,15 @@ void udp_server_function(void *arg, struct udp_pcb *pcb,
 					{
 
 						//wait until IP has finish
-						while(XFoo_GetStatus(&xcore)!=1)
+						while(XFoo_IsIdle(&xcore)!=1)
 						{
 							if (DEBUG)
-							printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
+							printf("Wait, IP is running\n\r");
 						}
 
 						if (DEBUG)
-						printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
-
-
-						if (DEBUG)
 						printf("Reading data from DDR ...\n");
+						
 
 						for(i=0;i<ETH_PACKET_LENGTH;i++)
 						{
@@ -369,7 +365,6 @@ err_t tcp_server_function(void *arg, struct tcp_pcb *tpcb,
 				{
 					if (DEBUG){
 						printf("The core is ready to be used\n");
-						printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
 					}
 				}
 				else
@@ -415,13 +410,11 @@ err_t tcp_server_function(void *arg, struct tcp_pcb *tpcb,
 		{
 
 			//wait until IP has finish
-			while(XFoo_GetStatus(&xcore)!=1){
+			while(XFoo_IsIdle(&xcore)!=1)
+			{
 				if (DEBUG)
-				printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
+				printf("Wait, IP is running\n\r");
 			}
-
-			if (DEBUG)
-			printf("Status is %d\n\r",XFoo_GetStatus(&xcore));
 
 			if (DEBUG)
 			printf("Reading data from DDR ...\n");
