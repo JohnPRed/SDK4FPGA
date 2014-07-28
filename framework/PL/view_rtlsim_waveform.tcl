@@ -32,7 +32,7 @@
 #  May - 2014
 
 # Required tools:
-# Vivado 2014.1 (if simulation with xsim)
+# Vivado (minimum release 2014.1) (if simulation with xsim)
 # Modesim (if simulation with modesim)
 
 #to execute the script:

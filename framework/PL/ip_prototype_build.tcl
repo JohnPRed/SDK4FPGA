@@ -30,10 +30,10 @@
 
 #  FPGA ip prototype build Vivado project
 #  Suardi Andrea [a.suardi@imperial.ac.uk]
-#  May - 2014
+#  July - 2014
 
-# Required tools:
-# Vivado 2014.1
+# Minimum Required tools:
+# Vivado (minimum release 2014.1)
 
 # Supported hardware:
 #  -  ZedBoard  Zynq™-7000 Development Board  with  Zynq XC7Z020 (http://www.zedboard.org/product/zedboard)
@@ -96,6 +96,8 @@ file delete -force $target_dir
 
 file mkdir $target_dir
 cd $target_dir
+
+set vivado_version [version -short]
 
 create_project prototype
 
@@ -451,10 +453,22 @@ file copy -force $source_file $target_file_dir
 unset source_file
 
 
-file mkdir prototype.sdk
-file copy -force prototype.runs/impl_1/design_1_wrapper.sysdef prototype.sdk/design_1_wrapper.hdf
 
-launch_sdk -workspace prototype.sdk -hwspec prototype.sdk/design_1_wrapper.hdf
+if {$vivado_version == "2014.1"} {
+
+	export_hardware [get_files prototype.srcs/sources_1/bd/design_1/design_1.bd] [get_runs impl_1] -bitstream
+	launch_sdk -bit prototype.sdk/SDK/SDK_Export/hw/design_1_wrapper.bit -workspace prototype.sdk/SDK/SDK_Export -hwspec prototype.sdk/SDK/SDK_Export/hw/design_1.xml
+    
+} elseif {$vivado_version == "2014.2"} {
+
+	file mkdir prototype.sdk
+	file copy -force prototype.runs/impl_1/design_1_wrapper.sysdef prototype.sdk/design_1_wrapper.hdf
+	launch_sdk -workspace prototype.sdk -hwspec prototype.sdk/design_1_wrapper.hdf
+	
+}
+
+
+
 
 
 close_project

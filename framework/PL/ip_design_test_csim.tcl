@@ -32,7 +32,7 @@
 #  May - 2014
 
 # Required tools:
-# Vivado_HLS 2014.1
+# Vivado_HLS (minimum release 2014.1)
 # Matlab
 
 #to execute the script:
