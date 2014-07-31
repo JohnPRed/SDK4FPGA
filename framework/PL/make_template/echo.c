@@ -227,22 +227,13 @@ void udp_server_function(void *arg, struct udp_pcb *pcb,
 					else if (packet_type==4) //read data from DDR
 					{
 
-						//wait until IP has finish
-						while(XFoo_IsIdle(&xcore)!=1)
-						{
-							if (DEBUG)
-							printf("Wait, IP is running\n\r");
-						}
-
-						if (DEBUG)
-						printf("Reading data from DDR ...\n");
-						
-
+						//Initialise output vector
 						for(i=0;i<ETH_PACKET_LENGTH;i++)
 						{
-							outvec[i]=0;
+							outvec[i]=1;
 						}
-
+						
+						
 						switch (packet_internal_ID)
 						{
 							///////////////////////////////////////////////////////////////////
@@ -253,7 +244,23 @@ void udp_server_function(void *arg, struct udp_pcb *pcb,
 							default:
 								break;
 						}
+						
+						
+						
+						if (XFoo_IsIdle(&xcore)==1)
+						{
+							outvec[ETH_PACKET_LENGTH_RECV-2]=0; //IP is running: 1=YES, 0=NO
+							if (DEBUG)
+								printf("IP is ready ...\n");
 
+						} else {
+							outvec[ETH_PACKET_LENGTH_RECV-2]=1; //IP is running: 1=YES, 0=NO
+							if (DEBUG)
+								printf("Wait IP is running ...\n");
+						}
+
+						
+						
 						// send back the payload
 						// We now need to return the result
 						pnew.next = NULL;
@@ -409,20 +416,12 @@ err_t tcp_server_function(void *arg, struct tcp_pcb *tpcb,
 		else if (packet_type==4) //read data from DDR
 		{
 
-			//wait until IP has finish
-			while(XFoo_IsIdle(&xcore)!=1)
-			{
-				if (DEBUG)
-				printf("Wait, IP is running\n\r");
-			}
-
-			if (DEBUG)
-			printf("Reading data from DDR ...\n");
-
+			//Initialise output vector
 			for(i=0;i<ETH_PACKET_LENGTH;i++)
 			{
-				outvec[i]=0;
+				outvec[i]=1;
 			}
+			
 
 			switch (packet_internal_ID)
 			{
@@ -436,8 +435,17 @@ err_t tcp_server_function(void *arg, struct tcp_pcb *tpcb,
 			}
 
 
-			outvec[ETH_PACKET_LENGTH-2]=0;
-			outvec[ETH_PACKET_LENGTH-1]=0;
+			if (XFoo_IsIdle(&xcore)==1)
+			{
+				outvec[ETH_PACKET_LENGTH_RECV-2]=0; //IP is running: 1=YES, 0=NO
+				if (DEBUG)
+					printf("IP is ready ...\n");
+
+			} else {
+				outvec[ETH_PACKET_LENGTH_RECV-2]=1; //IP is running: 1=YES, 0=NO
+				if (DEBUG)
+					printf("Wait IP is running ...\n");
+			}
 
 
 			// send back the payload

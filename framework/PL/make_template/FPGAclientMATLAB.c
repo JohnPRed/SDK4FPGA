@@ -84,6 +84,8 @@ void mexFunction( int nlhs, mxArray *plhs[] , int nrhs, const mxArray *prhs[] )
 	int i,j;
 	double time_matlab_int,time_fpga_int;
     int flag;
+	
+	double flag_IP_running;
    
     double port;
     double link;
@@ -177,19 +179,30 @@ void mexFunction( int nlhs, mxArray *plhs[] , int nrhs, const mxArray *prhs[] )
        //     for (i=0; i<1; i++)
         {
         
-            //fill in the vector buffer to be sent to Ethernet
-            
-            //vector label
-            input_data_eth[ETH_PACKET_LENGTH-2]=(double)pow(2,16)*packet_internal_ID+Packet_type;        
-            input_data_eth[ETH_PACKET_LENGTH-1]=packet_internal_ID_offset;
-            
-            
-            // main call
-            if (FPGA_link==1) //TCP interface
-                flag=TCPclient_wrap(FPGA_ip_address,FPGA_port_number,input_data_eth,Packet_type,output_data_eth,&time_matlab_int,&time_fpga_int);
-           else
-               flag=UDPclient_wrap(FPGA_ip_address,FPGA_port_number,input_data_eth,Packet_type,output_data_eth,&time_matlab_int,&time_fpga_int);
-
+		flag_IP_running=1;
+		
+		while(flag_IP_running==1)
+			{
+			
+				//fill in the vector buffer to be sent to Ethernet
+				
+				//vector label
+				input_data_eth[ETH_PACKET_LENGTH-2]=(double)pow(2,16)*packet_internal_ID+Packet_type;        
+				input_data_eth[ETH_PACKET_LENGTH-1]=packet_internal_ID_offset;
+				
+				
+				// main call
+				if (FPGA_link==1) //TCP interface
+					flag=TCPclient_wrap(FPGA_ip_address,FPGA_port_number,input_data_eth,Packet_type,output_data_eth,&time_matlab_int,&time_fpga_int);
+			    else
+				   flag=UDPclient_wrap(FPGA_ip_address,FPGA_port_number,input_data_eth,Packet_type,output_data_eth,&time_matlab_int,&time_fpga_int);
+ 
+				
+				flag_IP_running=output_data_eth[ETH_PACKET_LENGTH_RECV-2];
+				if (flag_IP_running==1)
+					printf("Waiting FPGA is running ...\n");
+			
+			}
             
             // assemble the read chucks into the output vector 
             for (j=0; ((j<ETH_PACKET_LENGTH_RECV-2) && (packet_internal_ID_offset*(ETH_PACKET_LENGTH_RECV-2)+j<packet_output_size)); j++) {
@@ -453,13 +466,21 @@ int UDPclient_wrap(char ip_address[], unsigned port_number, double din[ETH_PACKE
                      //printf("incoming_fix[%d]=%x\n",i,incoming_fix[i]);
                      
                     if (FLOAT_FIX==1) { //fixed-point
-                        //printf("incoming_fix[%d]=%x\n", i,incoming_fix[i]);
+						//printf("incoming_fix[%d]=%x\n", i,incoming_fix[i]);
                         dout[i] = (double)((double)incoming_fix[i])/pow(2,FRACTIONLENGTH);
                     }
                     else if (FLOAT_FIX==0) //floating-point
                         dout[i] = (double)incoming_float[i];
                     
                 }
+				
+				 if (FLOAT_FIX==1)  //fixed-point
+					dout[ETH_PACKET_LENGTH_RECV-2]=(double)incoming_fix[ETH_PACKET_LENGTH_RECV-2]; //IP is running: 1=YES, 0=NO
+				else if (FLOAT_FIX==0) //floating-point
+					dout[ETH_PACKET_LENGTH_RECV-2]=(double)incoming_float[ETH_PACKET_LENGTH_RECV-2]; //IP is running: 1=YES, 0=NO
+				
+				
+				
             }
         } 
         else 
@@ -477,22 +498,13 @@ int UDPclient_wrap(char ip_address[], unsigned port_number, double din[ETH_PACKE
        
 
 
-            *FPGA_time=0;
+        *FPGA_time=0;
 
 
     }
+	
+	*PC_time=0;
     
-	// Finish timing 
-    #ifdef _WIN32
-        QueryPerformanceCounter(&t2);
-        QueryPerformanceFrequency(&freq);
-        *PC_time = (double)(t2.QuadPart-t1.QuadPart)/(double)freq.QuadPart*1000;
-    #else
-        gettimeofday(&t2, NULL);
-        *PC_time = (t2.tv_sec - t1.tv_sec) * 1000.0;      // sec to ms 
-        *PC_time += (t2.tv_usec - t1.tv_usec) / 1000.0;   // us to ms  
-    #endif 
-
 
     
 #ifdef _WIN32
@@ -707,6 +719,14 @@ int TCPclient_wrap(char ip_address[], unsigned port_number,double din[ETH_PACKET
                         dout[i] = (double)incoming_float[i];
                     
                 }
+				
+				if (FLOAT_FIX==1)  //fixed-point
+					dout[ETH_PACKET_LENGTH_RECV-2]=(double)incoming_fix[ETH_PACKET_LENGTH_RECV-2]; //IP is running: 1=YES, 0=NO
+				else if (FLOAT_FIX==0) //floating-point
+					dout[ETH_PACKET_LENGTH_RECV-2]=(double)incoming_float[ETH_PACKET_LENGTH_RECV-2]; //IP is running: 1=YES, 0=NO
+				
+				
+				
             }
         } 
         else 
@@ -727,19 +747,9 @@ int TCPclient_wrap(char ip_address[], unsigned port_number,double din[ETH_PACKET
 
 
     *FPGA_time=0;
+	*FPGA_time=0;
 
-	// Finish timing
-    #ifdef _WIN32
-        QueryPerformanceCounter(&t2);
-        QueryPerformanceFrequency(&freq);
-        *PC_time = (double)(t2.QuadPart-t1.QuadPart)/(double)freq.QuadPart*1000;
-    #else
-        gettimeofday(&t2, NULL);
-        *PC_time = (t2.tv_sec - t1.tv_sec) * 1000.0;      // sec to ms 
-        *PC_time += (t2.tv_usec - t1.tv_usec) / 1000.0;   // us to ms 
-    #endif 
-
-
+	
     
 #ifdef _WIN32
     closesocket(socket_handle);
