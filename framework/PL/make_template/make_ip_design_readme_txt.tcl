@@ -83,7 +83,7 @@ puts $file ""
 puts $file ""
 puts $file ""
 puts $file ""
-puts $file "The PL template has been customized to support an algortihm with the following input and output vectors:"
+puts $file "The PL template has been customized to support an algorithm with the following input and output vectors:"
 puts $file ""
 puts $file "Name			| Direction		| Number of data | Data representation"
 puts $file ""
@@ -115,7 +115,7 @@ foreach i $output_vectors {
 puts $file ""
 puts $file ""
 puts $file ""
-puts $file "Input and output vectors has been mapped to a virtual memory at the followign adresses:"
+puts $file "Input and output vectors has been mapped to a virtual memory at the following addresses:"
 puts $file ""
 puts $file "Name			| Base address in Byte"
 puts $file ""
@@ -133,7 +133,7 @@ foreach i $output_vectors {
 		incr m
 }
 puts $file ""
-puts $file "The virtual memory is used by foo_testbench.cpp during the C/RTL simulaiton."
+puts $file "The virtual memory is used by foo_testbench.cpp during the C/RTL simulation."
 
 
 

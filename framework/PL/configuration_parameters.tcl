@@ -35,14 +35,14 @@
 # ##############################
 # Define the IP inputs and output  names
 # The IP input and outputs are VECTORS ONLY of any size.
-# IMPORTANT NOTICE: It HAS To be set up before runnign make_template.tcl script and DO NOT modify it during the following design phases.
+# IMPORTANT NOTICE: It HAS To be set up before running make_template.tcl script and DO NOT modify it during the following design phases.
 
 # Set the NAME of the INPUT vectors
 set input_vectors [list "x0" "x1"]
 # Set the NAME of the OUTPUT vectors
 set output_vectors [list "y0"]
-# Set the maximum vector size (number of data) among the input and output vectros
-# Note that the user design can use input and ouput vector of smaller size if required 
+# Set the maximum vector size (number of data) among the input and output vectors
+# Note that the user design can use input and output vector of smaller size if required 
 set max_vector_length 100
 
 
@@ -103,6 +103,6 @@ set num_simulation 1
 set rtl_simulator "xsim"
 
 # ##############################
-# Set Matlab path. Matlab will be called in batch mode to generate input stimulous and read back the test results
+# Set Matlab path. Matlab will be called in batch mode to generate input stimulus and read back the test results
 set MatlabPath "C:/Program Files/MATLAB/R2014a/bin/matlab.exe";
 

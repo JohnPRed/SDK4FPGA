@@ -134,11 +134,11 @@ foreach i $output_vectors {
 		incr m
 }
 puts $file ""
-puts $file "The external DDR memory is shared memory between the CPU embedded into the FPGA and the Algortihm implemented into the FPGa programmable logic (PL)."
+puts $file "The external DDR memory is shared memory between the CPU embedded into the FPGA and the Algorithm implemented into the FPGA programmable logic (PL)."
 puts $file ""
 puts $file ""
 puts $file ""
-puts $file "To send input vectors from the host (Matlab) to the FPGA call matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
+puts $file "To send input vectors from the host (Matlab) to the FPGA call Matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
 puts $file ""
 puts $file "Input vector name		| Packet type 	|	Packet internal ID 	| Data to send	| Packet output size"
 set m 0
@@ -151,7 +151,7 @@ foreach i $input_vectors {
 puts $file ""
 puts $file ""
 puts $file ""
-puts $file "To read output vectors from the FPGA to the host (Matlab) call matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
+puts $file "To read output vectors from the FPGA to the host (Matlab) call Matlab function \"FPGAclientMATLAB\" in \"test_HIL.m\" using the following parameters:"
 puts $file ""
 puts $file "Output vector name		| Packet type 	|	Packet internal ID 	| Data to send	| Packet output size"
 set m 0
