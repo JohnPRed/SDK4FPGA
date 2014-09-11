@@ -85,6 +85,14 @@ src $file
 set file "make_template/make_interface_library_h.tcl"
 src $file $float_fix $bits_word_integer_length $bits_word_fraction_length $input_vectors $output_vectors $tcp_udp $mem_base_address
 
+
+# ############################# 
+# #############################   
+# Update ip_prototype\doc\readme.txt  file
+set file "make_template/make_ip_prototype_readme_txt.tcl"
+src $file $input_vectors $output_vectors $max_vector_length $float_fix $bits_word_integer_length $bits_word_fraction_length $mem_base_address
+unset file
+
 # ############################# 
 # ############################# 
 #  Run Vivado
@@ -414,43 +422,11 @@ open_run impl_1
 
 # #############################  
 # clear previous csim results
-set target_file_dir "../../reports"
+set target_file_dir ""
+append target_file_dir "../../reports/" $project_name "." $board_name
 file delete -force $target_file_dir
 file mkdir $target_file_dir
 
-
-#copy runs report to the reports folder
-append source_file "prototype.runs/synth_1/design_1_wrapper_utilization_synth.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_clock_utilization_placed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_control_sets_placed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_drc_routed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_io_placed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_power_routed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_timing_summary_routed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
-
-append source_file "prototype.runs/impl_1/design_1_wrapper_utilization_placed.rpt"
-file copy -force $source_file $target_file_dir
-unset source_file
 
 
 
@@ -470,14 +446,20 @@ if {$vivado_version == "2014.1"} {
 
 
 
-
 close_project
+
+cd ..
+cd ..
+cd ..
+cd ..
+
+set file "make_template/parse_ip_prototype_report.tcl"
+src $file $project_name $board_name
 
 exit
 
 unset source_dir
 unset target_dir
 
-cd ..
-cd ..
+
 

@@ -62,8 +62,8 @@ set float_fix 1;
 #representing the integer and the fraction part  
 #REMARK1: make attention when choosing the integer length because overflow can occur.
 #REMARK2: maximum word length size (bits_word_integer_length+bits_word_fraction_length) is 32, minimum integer length size is 1
-set bits_word_integer_length 8; 
-set bits_word_fraction_length 8;
+set bits_word_integer_length 4; 
+set bits_word_fraction_length 4;
 
 # ##############################
 # FPGA design clock frequency [MHz]
