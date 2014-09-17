@@ -101,8 +101,3 @@ set num_simulation 1
 
 # If rtl simulation is used, set the RTL simulator. The supported simulators are: modelsim, xsim
 set rtl_simulator "xsim"
-
-# ##############################
-# Set Matlab path. Matlab will be called in batch mode to generate input stimulus and read back the test results
-set MatlabPath "C:/Program Files/MATLAB/R2014a/bin/matlab.exe";
-

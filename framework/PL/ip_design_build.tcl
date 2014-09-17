@@ -37,7 +37,7 @@
 
 #to execute the script:
 # 1) set configuration parameters in "configuration_parameters.tcl"
-# 2) run Vivado HLS Command Prompt
+# 2) open Command Prompt window
 # 2) type: "vivado_hls -f ip_design_build.tcl" (without "")
 
 

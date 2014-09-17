@@ -37,7 +37,7 @@
 
 #to execute the script:
 # 1) set configuration parameters in "configuration_parameters.tcl"
-# 2) Run Vivado TCL shell
+# 2) open Command Prompt window
 # 3) Type: "vivado -mode gui -source view_rtlsim_waveform.tcl" (without "")
 
 

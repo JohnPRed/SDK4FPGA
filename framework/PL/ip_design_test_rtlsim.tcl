@@ -38,7 +38,7 @@
 
 #to execute the script:
 # 1) set configuration parameters in "configuration_parameters.tcl"
-# 2) run Vivado HLS Command Prompt
+# 2) open Command Prompt window
 # 2) type: "vivado_hls -f ip_design_test_rtlsim.tcl" (without "")
 
 
@@ -131,6 +131,7 @@ proc rtlsim {input_vectors project_name FPGA_name fclk rtl_simulator} {
 # #################################################################################################################### 
 
 set sim_type "'test_rtlsim'"
+set Matlab "matlab.exe"
 
 # #############################   
 # Load configuration parameters
@@ -160,7 +161,7 @@ for {set i 0} {$i < $num_simulation} {incr i} {
 	file delete -force _locked
 	 
 	# Call Matlab function write_testbench.m to generate the *.dat files used by foo_test.cpp
-	set status [ catch { exec $MatlabPath --nospash -nodesktop -r write_stimulus($i,$sim_type)} output ]
+	set status [ catch { exec $Matlab --nospash -nodesktop -r write_stimulus($i,$sim_type)} output ]
 
 	# Wait until the Matlab has finished
 	while {true} {
@@ -188,7 +189,7 @@ for {set i 0} {$i < $num_simulation} {incr i} {
 	
 
 	# Call Matlab function read_testbench.m
-	set status [ catch { exec $MatlabPath --nospash -nodesktop -r read_results($i,$sim_type)} output ]
+	set status [ catch { exec $Matlab --nospash -nodesktop -r read_results($i,$sim_type)} output ]
 
 	# Wait until the Matlab has finished
 	while {true} {
