@@ -1,5 +1,19 @@
 #ICL SDK4FPGA
 
+ <span style="color:#FF0000">
+
+**Since December 2014, ICL SDK4FPGA is no longer maintained, but it remains available this website.**
+
+**A new release named PROTOIP has been developed and integrated inside both Xilinx Vivado Design Suite and Matlab.**
+
+**PROTOIP is available at [https://github.com/asuardi/protoip](https://github.com/asuardi/protoip)**
+
+</span>
+
+----------
+
+
+
 All documentation for ICL SDK4FPGA is available in the Wiki
 at https://github.com/asuardi/SDK4FPGA/wiki/Home
 
