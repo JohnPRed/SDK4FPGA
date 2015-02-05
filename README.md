@@ -1,6 +1,6 @@
 #ICL SDK4FPGA
 
- <span style="color:#FF0000">
+ <div style="font-size:12pt;color:red;">
 
 **Since December 2014, ICL SDK4FPGA is no longer maintained, but it remains available this website.**
 
@@ -8,7 +8,7 @@
 
 **PROTOIP is available at [https://github.com/asuardi/protoip](https://github.com/asuardi/protoip)**
 
-</span>
+</div>
 
 ----------
 
